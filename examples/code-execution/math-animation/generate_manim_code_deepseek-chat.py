@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 #     python_code: str
 #     scene_class_name: str
 
+
 class ManimCodeGenerator(curator.LLM):
     """Generates manim code for mathematical concepts"""
 
@@ -136,11 +137,12 @@ class ManimCodeGenerator(curator.LLM):
             "concept_id": input.get("id", None),
             # Add manim code information
             "python_code": input.get("python_code", ""),
-            "scene_class_name":  input.get("scene_class_name", ""),
+            "scene_class_name": input.get("scene_class_name", ""),
             # Add metadata
             "generation_time": datetime.now().strftime("%Y%m%d_%H%M%S"),
             "filename": f"{sanitized_title}.py",
         }
+
 
 def main(dataset_name, output_dataset_name):
     """Verify concepts by generating code for a few samples
@@ -156,12 +158,12 @@ def main(dataset_name, output_dataset_name):
     dataset = load_dataset(dataset_name, split="train")
 
     os.environ["CURATOR_VIEWER"] = "1"
-    
+
     # Initialize the code generator
 
     # deepseek
     model_name = "deepseek-chat"
-    backend= "openai"
+    backend = "openai"
     backend_params = {
         "base_url": "https://api.deepseek.com/",
         "api_key": "sk-your-api-key",
@@ -170,13 +172,7 @@ def main(dataset_name, output_dataset_name):
         "max_tokens_per_minute": 10_000_000,
         "request_timeout": 30 * 60,
     }
-    generation_params = {
-        "temp": 0.0,
-        "max_tokens": 8192,
-        "response_format": {
-            'type': 'json_object'
-        }
-    }
+    generation_params = {"temp": 0.0, "max_tokens": 8192, "response_format": {"type": "json_object"}}
 
     code_generator = ManimCodeGenerator(
         model_name=model_name,
