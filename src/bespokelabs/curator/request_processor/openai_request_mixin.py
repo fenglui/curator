@@ -47,15 +47,17 @@ class OpenAIRequestMixin:
             "model": generic_request.model,
             "messages": generic_request.messages,
         }
-
         if generic_request.response_format:
-            request["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "output_schema",  # NOTE: not using 'strict': True
-                    "schema": generic_request.response_format,
-                },
-            }
+            if "api.deepseek.com" in self.url:
+                print('`json_schema` is unavailable now on (api.deepseek.com) ')
+            else:
+                request["response_format"] = {
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": "output_schema",  # NOTE: not using 'strict': True
+                        "schema": generic_request.response_format,
+                    },
+                }
 
         for key, value in generic_request.generation_params.items():
             request[key] = value
