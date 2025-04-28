@@ -229,6 +229,9 @@ class OpenAIOnlineRequestProcessor(BaseOnlineRequestProcessor, OpenAIRequestMixi
             - gpt-4o with date >= 2024-08-06 or latest
             - o1 with date >= 2024-12-17 or latest
             - o3-mini with date >= 2025-01-31 or latest
+            - gpt-4.1 latest
+            - gpt-4.1-mini latest
+            - gpt-4.1-nano latest
         """
         model_name = self.config.model.lower()
 
@@ -240,7 +243,7 @@ class OpenAIOnlineRequestProcessor(BaseOnlineRequestProcessor, OpenAIRequestMixi
             if mini_date >= datetime(2024, 7, 18):
                 return True
 
-        # Check gpt-4o, o1, o3-mini support.
+        # Check gpt-4o, o1, o3-mini, gpt-4.1 support.
         if model_name in ["gpt-4o", "o1"]:  # Latest version
             return True
         if "gpt-4o-" in model_name:
@@ -256,7 +259,7 @@ class OpenAIOnlineRequestProcessor(BaseOnlineRequestProcessor, OpenAIRequestMixi
             if base_date >= datetime.datetime(2025, 1, 31):  # Support o3-mini dated versions from 2025-01-31
                 return True
         # Source: https://platform.openai.com/docs/models/gpt-4.1, https://platform.openai.com/docs/models/gpt-4.1-mini, https://platform.openai.com/docs/models/gpt-4.1-nano
-        if "gpt-4.1-" in model_name:
+        if "gpt-4.1" in model_name:
             return True
         if model_name in ["deepseek-reasoner", "deepseek-chat"] and "api.deepseek.com" in self.url:
             return True
